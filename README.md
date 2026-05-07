@@ -40,5 +40,3 @@ To run this project locally on your machine:
 4. **Play!**
    Open your browser and navigate to `http://localhost:3000` to start playing.
 
-## License
-MIT License
