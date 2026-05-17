@@ -1,0 +1,9 @@
+{
+  "appsail": [
+    {
+      "name": "ChessApp",
+      "source": ".",
+      "type": "nodejs"
+    }
+  ]
+}

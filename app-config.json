@@ -1,0 +1,4 @@
+{
+  "env": "nodejs18",
+  "command": "node server.js"
+}
