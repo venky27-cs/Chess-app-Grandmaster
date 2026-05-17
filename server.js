@@ -14,30 +14,49 @@ app.use(express.json());
 // Serve static files from the current directory
 app.use(express.static(__dirname));
 
-const USERS_FILE = path.join(__dirname, 'users.json');
+const isCatalyst = !!process.env.X_ZOHO_CATALYST_LISTEN_PORT;
+const USERS_FILE = isCatalyst ? '/tmp/users.json' : path.join(__dirname, 'users.json');
 
 function loadUsers() {
-    if (!fs.existsSync(USERS_FILE)) {
-        fs.writeFileSync(USERS_FILE, JSON.stringify({}));
+    try {
+        if (!fs.existsSync(USERS_FILE)) {
+            fs.writeFileSync(USERS_FILE, JSON.stringify({}));
+        }
+        return JSON.parse(fs.readFileSync(USERS_FILE, 'utf-8'));
+    } catch (e) {
+        console.error("Error loading users:", e);
+        return {};
     }
-    return JSON.parse(fs.readFileSync(USERS_FILE, 'utf-8'));
 }
 
 function saveUsers(users) {
-    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 4));
+    try {
+        fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 4));
+    } catch (e) {
+        console.error("Error saving users:", e);
+    }
 }
 
-const GAMES_FILE = path.join(__dirname, 'games.json');
+const GAMES_FILE = isCatalyst ? '/tmp/games.json' : path.join(__dirname, 'games.json');
 
 function loadGames() {
-    if (!fs.existsSync(GAMES_FILE)) {
-        fs.writeFileSync(GAMES_FILE, JSON.stringify([]));
+    try {
+        if (!fs.existsSync(GAMES_FILE)) {
+            fs.writeFileSync(GAMES_FILE, JSON.stringify([]));
+        }
+        return JSON.parse(fs.readFileSync(GAMES_FILE, 'utf-8'));
+    } catch (e) {
+        console.error("Error loading games:", e);
+        return [];
     }
-    return JSON.parse(fs.readFileSync(GAMES_FILE, 'utf-8'));
 }
 
 function saveGames(games) {
-    fs.writeFileSync(GAMES_FILE, JSON.stringify(games, null, 4));
+    try {
+        fs.writeFileSync(GAMES_FILE, JSON.stringify(games, null, 4));
+    } catch (e) {
+        console.error("Error saving games:", e);
+    }
 }
 
 function hashPassword(password) {
