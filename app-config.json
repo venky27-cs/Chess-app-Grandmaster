@@ -1,4 +1,7 @@
 {
-  "env": "nodejs18",
-  "command": "node server.js"
+  "command": "node server.js",
+  "build_path": "./",
+  "stack": "node22",
+  "env_variables": {},
+  "memory": 256
 }
