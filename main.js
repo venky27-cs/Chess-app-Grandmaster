@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const btnRestart = document.getElementById('btn-restart');
     const btnUndo = document.getElementById('btn-undo');
+    const btnMainMenu = document.getElementById('btn-main-menu');
     const btnPlayAgain = document.getElementById('btn-play-again');
     const btnDownloadReport = document.getElementById('btn-download-report');
     
@@ -186,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Lock UI for online play
             btnUndo.style.display = 'none';
             btnRestart.style.display = 'none';
+            btnMainMenu.style.display = 'none';
             btnOfferDraw.style.display = 'inline-block';
             btnResign.style.display = 'inline-block';
 
@@ -460,6 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restore UI
         btnUndo.style.display = 'flex';
         btnRestart.style.display = 'flex';
+        btnMainMenu.style.display = 'flex';
         playerEloInfo.textContent = "Analysis Mode";
 
         // Hide timers in analysis mode
@@ -860,6 +863,24 @@ document.addEventListener('DOMContentLoaded', () => {
             legalMovesForSelected = [];
             updateUI();
         }
+    });
+
+    btnMainMenu.addEventListener('click', () => {
+        if (isOnline) return; // online games must end via resign / game-over
+
+        // Reset any leftover state before returning to the menu
+        if (timerInterval) clearInterval(timerInterval);
+        timeLimitSeconds = null;
+        timeRemaining = { w: 0, b: 0 };
+        selectedSq = null;
+        legalMovesForSelected = [];
+        pendingPromoMove = null;
+        playerEloInfo.textContent = '';
+
+        btnPlayAgain.textContent = "Play Again";
+        hideModals();
+
+        initGame(false); // re-initialize the board and show the mode-select menu
     });
 
     btnResign.addEventListener('click', () => {
